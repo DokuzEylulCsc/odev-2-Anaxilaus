@@ -11,10 +11,10 @@
  
 ## Project Structure
 **Click to jump:**
- - [`Source Code`](./src/ProblemSet)
+ - [`Source Code`](src/Problemset)
  - [`Compiled / Bytecodes`](./bin)
  
-**Detailed scheme of project below:**
+**Project structure:**
 ```
 │   ├── src [Source Code]
 │   │   ├── ProblemSet
@@ -23,4 +23,34 @@
 ├── DESCRIPTION.*
 ├── README.md
 ├── .*
+```
+
+
+**Class structure:**
+```
+├── University
+│   ├── Students
+│   ├── Teachers
+│   ├── Faculties
+├── Faculty
+│   ├── University
+│   ├── Departments
+├── Department
+│   ├── Faculty
+│   ├── Classes
+│   ├── Students
+│   ├── Teachers
+├── Class
+│   ├── Students
+│   ├── Teachers
+│   ├── Department
+├── Student
+│   ├── Classes
+│   ├── Department
+├── Teacher
+│   ├── Classes
+│   ├── Department
+├── Undergraduate [Student]
+├── Graduate [Student]
+├── Postgraduate [Student]
 ```
