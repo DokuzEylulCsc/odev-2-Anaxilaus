@@ -2,19 +2,20 @@
 ##### Student
  - [`Mert Dede | No: 2016280010`](https://github.com/Anaxilaus)
 
-##### Description
-- [PDF](./DESCRIPTION.pdf)
-- [MarkDown](./DESCRIPTION.md)
+##### Click to jump:
+- [`Source Code`](src/Problemset)
+- [`Compiled / Bytecodes`](./bin)
+- [`References`](./REFERENCES.md)
+- [Description: PDF](./DESCRIPTION.pdf)
+- [Description: MarkDown](./DESCRIPTION.md)
 
 ##### Specifications
 - Using [`Java and JDK 11.`](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html)
  
-## Project Structure
-**Click to jump:**
- - [`Source Code`](src/Problemset)
- - [`Compiled / Bytecodes`](./bin)
+****
+
  
-**Project structure:**
+## Project structure
 ```
 │   ├── src [Source Code]
 │   │   ├── ProblemSet
@@ -25,43 +26,28 @@
 ├── .*
 ```
 
-
-**Class structure:**
+## Class structure
+- All classes implements `Collection (Custom interface)` and `Serializable.`
+- Using Iterator design pattern.
 ```
-├── University
-│   ├── Students
-│   ├── Teachers
-│   ├── Faculties
-├── Faculty
-│   ├── University
-│   ├── Departments
-├── Department
-│   ├── Faculty
-│   ├── Classes
-│   ├── Students
-│   ├── Teachers
-├── Class
-│   ├── Students
-│   ├── Teachers
-│   ├── Department
-├── Student
-│   ├── Classes
-│   ├── Department
-├── Teacher
-│   ├── Classes
-│   ├── Department
+├── Human
+├── Teacher [Human]
+├── Student [Human]
 ├── Undergraduate [Student]
 ├── Graduate [Student]
 ├── Postgraduate [Student]
+---------------------------
+├── University
+│   ├── Faculties
+│   ├── Humans
+├── Faculty
+│   ├── Departments
+├── Department
+│   ├── Classes
+│   ├── Teachers
+├── Class
+│   ├── Humans
+---------------------------
+├── DoesntExistsException
+├── AlreadyExistsException
 ```
-
-## References
-- Design Patterns: 
-    - www.geeksforgeeks.org
-    - www.dzone.com
-- instanceof operator
-    - cs-fundamentals.com
-- Serialization - XML: 
-    - www.stackoverflow.com
- - XML:
-    - www.mkyong.com
