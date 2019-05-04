@@ -1,6 +1,5 @@
 package Problemset;
 
-
 class Postgraduate extends Student {
     public Postgraduate(Integer id) {
         super(id);

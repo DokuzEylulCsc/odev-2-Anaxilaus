@@ -1,12 +1,12 @@
 ## Problem Set 2
-##### Student: 
+##### Student
  - [`Mert Dede | No: 2016280010`](https://github.com/Anaxilaus)
 
-##### Description:
+##### Description
 - [PDF](./DESCRIPTION.pdf)
 - [MarkDown](./DESCRIPTION.md)
 
-##### Specifications:
+##### Specifications
 - Using [`Java and JDK 11.`](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html)
  
 ## Project Structure
@@ -54,3 +54,14 @@
 ├── Graduate [Student]
 ├── Postgraduate [Student]
 ```
+
+## References
+- Design Patterns: 
+    - www.geeksforgeeks.org
+    - www.dzone.com
+- instanceof operator
+    - cs-fundamentals.com
+- Serialization - XML: 
+    - www.stackoverflow.com
+ - XML:
+    - www.mkyong.com

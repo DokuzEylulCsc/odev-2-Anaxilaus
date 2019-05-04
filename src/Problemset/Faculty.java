@@ -1,27 +1,40 @@
 package Problemset;
 
+import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
-class Faculty {
-
+class Faculty implements Collection, Serializable {
     private final String Name;
-    Set<Department> departmentSet;
 
     public String getName() {
         return Name;
     }
 
-    public Set<Department> getDepartmentSet() {
+    Set<Department> departmentSet;
+
+    /**
+     * @return Department iterator.
+     */
+    public Iterator createIterator() {
+        return getDepartmentSet().iterator();
+    }
+
+    public void addDepartment(Department department) throws AlreadyExistsException {
+        if (getDepartmentSet().contains(department)) {
+            throw new AlreadyExistsException();
+        } else {
+            getDepartmentSet().add(department);
+        }
+    }
+
+    private Set<Department> getDepartmentSet() {
         return departmentSet;
     }
 
-    public void setDepartmentSet(Set<Department> departmentSet) {
+    private void setDepartmentSet(Set<Department> departmentSet) {
         this.departmentSet = departmentSet;
-    }
-
-    public void addDepartment(Department department) {
-        getDepartmentSet().add(department);
     }
 
     /**
@@ -52,6 +65,12 @@ class Faculty {
         return getName().equals(d.Name);
     }
 
-    @Override public int hashCode() { return getName().hashCode(); }
+    @Override
+    public String toString(){
+        return getName();
+    }
+
+    @Override
+    public int hashCode() { return getName().hashCode(); }
 
 }

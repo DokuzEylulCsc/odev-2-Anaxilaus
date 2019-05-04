@@ -2,24 +2,32 @@ package Problemset;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
-class Department implements Serializable {
+class Department implements Collection, Serializable {
 
     private final String Name;
     Set<Class> classSet;
     Set<Teacher> teacherSet;
 
+    /**
+     * @return Class iterator.
+     */
+    public Iterator createIterator() {
+        return getClassSet().iterator();
+    }
+
     public Set<Class> getClassSet() {
         return classSet;
     }
 
-    public void setClassSet(Set<Class> classSet) {
+    private void setClassSet(Set<Class> classSet) {
         this.classSet = classSet;
     }
-
-    public void addClass(Class newClass) {
-        getClassSet().add(newClass);
+    public void addClass(Class newClass) throws AlreadyExistsException {
+        if (getClassSet().contains(newClass)) throw new AlreadyExistsException();
+        else getClassSet().add(newClass);
     }
 
     public void closeClass(Class oldClass) throws UnsupportedOperationException {
@@ -49,10 +57,12 @@ class Department implements Serializable {
 
     public Department(String name) {
         Name = name;
+        setTeacherSet(new HashSet<>());
         setClassSet(new HashSet<>());
     }
     public Department(String name, Set<Class> _classSet) {
         Name = name;
+        setTeacherSet(new HashSet<>());
         setClassSet(_classSet);
     }
 
@@ -60,5 +70,11 @@ class Department implements Serializable {
         return getName().equals(d.getName());
     }
 
-    @Override public int hashCode() { return getName().hashCode(); }
+    @Override
+    public String toString() {
+        return getName();
+    }
+
+    @Override
+    public int hashCode() { return getName().hashCode(); }
 }
