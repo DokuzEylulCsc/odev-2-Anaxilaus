@@ -112,7 +112,7 @@ class Class implements Collection, Serializable {
                 } else {
                     element = doc.createElement("student");
                     element.setAttribute("id", ((Student) obj).getId().toString());
-                    element.setAttribute("studentType", obj.getClass().getName());
+                    element.setAttribute("type", obj.getClass().getName().substring("Problemset.".length()));
 
                     students.appendChild(element);
                 }

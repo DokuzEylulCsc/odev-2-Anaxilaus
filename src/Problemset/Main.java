@@ -25,7 +25,7 @@ public class Main {
 
             University DEU = new University("DEU");
             DEU.addFaculty(science);
-            DEU.update();
+            DEU.update(false);
             return DEU;
 
         } catch (UnsupportedOperationException e) {
