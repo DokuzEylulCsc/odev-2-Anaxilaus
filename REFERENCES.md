@@ -2,10 +2,9 @@
 - Design Patterns: 
     - www.geeksforgeeks.org
     - www.dzone.com
-- instanceof operator
-    - cs-fundamentals.com
-- Serialization - XML: 
-    - www.stackoverflow.com
- - XML:
+- Serialization - XML:
     - www.mkyong.com
+    - www.stackoverflow.com
+- `instanceof` operator
+    - www.cs-fundamentals.com
     

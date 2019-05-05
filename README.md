@@ -2,25 +2,25 @@
 ##### Student
  - [`Mert Dede | No: 2016280010`](https://github.com/Anaxilaus)
 
-##### Click to jump:
-- [`Source Code`](src/Problemset)
-- [`Compiled / Bytecodes`](./bin)
-- [`References`](./REFERENCES.md)
-- [Description: PDF](./DESCRIPTION.pdf)
-- [Description: MarkDown](./DESCRIPTION.md)
-
 ##### Specifications
 - Using [`Java and JDK 11.`](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html)
- 
-****
 
- 
+##### Click to jump
+- [Sample XML output](./BIL2002.xml)
+- [`Source Code`](src/Problemset)
+- [`Compiled / Bytecodes`](./bin)
+- [Description: PDF](./DESCRIPTION.pdf)
+- [Description: MarkDown](./DESCRIPTION.md)
+- [`References`](./REFERENCES.md)
+
 ## Project structure
 ```
 │   ├── src [Source Code]
 │   │   ├── ProblemSet
 │   ├── bin [Bytecodes]
 │   │   ├── ProblemSet
+├── BIL2002.xml [Sample XML output]
+├── University.ser [Optional serialization]
 ├── DESCRIPTION.*
 ├── README.md
 ├── .*
@@ -38,15 +38,15 @@
 ├── Postgraduate [Student]
 ---------------------------
 ├── University
-│   ├── Faculties
-│   ├── Humans
+│   ├── Faculties [ createIterator ]
+│   ├── Humans [createHumanIterator ]
 ├── Faculty
-│   ├── Departments
+│   ├── Departments [ createIterator ]
 ├── Department
-│   ├── Classes
-│   ├── Teachers
+│   ├── Classes [ createIterator ]
+│   ├── Teachers [ createTeacherIterator ]
 ├── Class
-│   ├── Humans
+│   ├── Humans [ createIterator ]
 ---------------------------
 ├── DoesntExistsException
 ├── AlreadyExistsException
