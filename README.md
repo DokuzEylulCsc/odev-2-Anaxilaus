@@ -6,12 +6,20 @@
 - Using [`Java and JDK 11.`](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html)
 
 ##### Click to jump
-- [Sample XML output](./BIL2002.xml)
 - [`Source Code`](src/Problemset)
 - [`Compiled / Bytecodes`](./bin)
+- [Sample XML Class output](./BIL2002.xml)
+- [References](./REFERENCES.md)
 - [Description: PDF](./DESCRIPTION.pdf)
 - [Description: MarkDown](./DESCRIPTION.md)
-- [`References`](./REFERENCES.md)
+
+## Usage
+Call `Problemset.Main` from binary directory:
+
+```
+(Project_dir/bin)
+$ java Problemset.Main
+```
 
 ## Project structure
 ```
@@ -28,7 +36,6 @@
 ```
 
 ## Class structure
-
 - Using Iterator Design Pattern.
 
 ```
