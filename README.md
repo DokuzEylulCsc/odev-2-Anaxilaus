@@ -20,6 +20,7 @@
 │   ├── bin [Bytecodes]
 │   │   ├── ProblemSet
 ├── BIL2002.xml [Sample XML output]
+├── BILG1001.xml [Sample XML output]
 ├── University.ser [Optional serialization]
 ├── DESCRIPTION.*
 ├── README.md
@@ -27,27 +28,37 @@
 ```
 
 ## Class structure
-- All classes implements `Collection (Custom interface)` and `Serializable.`
-- Using Iterator design pattern.
+
+- Using Iterator Design Pattern.
+
 ```
 ├── Human
+│   ├── Classes [iterator]
 ├── Teacher [Human]
 ├── Student [Human]
 ├── Undergraduate [Student]
 ├── Graduate [Student]
 ├── Postgraduate [Student]
+
 ---------------------------
+
 ├── University
-│   ├── Faculties [ createIterator ]
-│   ├── Humans [createHumanIterator ]
+│   ├── Faculties [iterator]
+│   ├── Humans [createHumanIterator]
 ├── Faculty
-│   ├── Departments [ createIterator ]
+│   ├── Departments [iterator]
 ├── Department
-│   ├── Classes [ createIterator ]
-│   ├── Teachers [ createTeacherIterator ]
+│   ├── Classes [iterator]
+│   ├── Teachers [iterator]
 ├── Class
-│   ├── Humans [ createIterator ]
+│   ├── Humans [iterator]
+
 ---------------------------
+
 ├── DoesntExistsException
 ├── AlreadyExistsException
+
+---------------------------
+
+├── Iterable
 ```

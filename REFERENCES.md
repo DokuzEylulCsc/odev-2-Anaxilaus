@@ -2,9 +2,11 @@
 - Design Patterns: 
     - www.geeksforgeeks.org
     - www.dzone.com
+- Java coding conventions
+    - www.oracle.com
+    - www.cs.tau.ac.il
 - Serialization - XML:
     - www.mkyong.com
     - www.stackoverflow.com
 - `instanceof` operator
     - www.cs-fundamentals.com
-    
