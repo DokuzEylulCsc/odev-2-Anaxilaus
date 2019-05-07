@@ -13,34 +13,33 @@ import javax.xml.transform.stream.StreamResult;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
-/**
- * Represents any Human being in an educational institute.
- */
+
 class Class implements Iterable, Serializable {
 
-    private final String     Code;
-    private Set<Student>    studentSet;
-    private Set<Teacher>    teacherSet;
+    private final String        Code;
+    private Collection<Student> students;
+    private Collection<Teacher> teachers;
 
 
     public Class(String code) {
         this(code, new HashSet<>(), new HashSet<>());
     }
 
-    public Class(String code, Iterable<Teacher> teachers, Iterable<Student> students) {
+    public Class(String code, Collection<Teacher> teachers, Collection<Student> students) {
+
         Code = code.toUpperCase();
-        setTeacherSet(StaticUtils.iterableAsSet((teachers)));
-        setStudentSet(StaticUtils.iterableAsSet(students));
+        setTeachers(teachers);
+        setStudents(students);
     }
 
 
     @Override
     public int hashCode() {
-        if (Code == null) System.out.println(studentSet);
         return getCode().hashCode();
     }
 
@@ -55,9 +54,9 @@ class Class implements Iterable, Serializable {
      * @see Human
      */
     public Iterator iterator() {
-        return (new HashSet<>(){{
-                    addAll(getStudentSet());
-                    addAll(getTeacherSet());
+        return (new ArrayList<>(){{
+                    addAll(getStudents());
+                    addAll(getTeachers());
                 }}).iterator();
     }
 
@@ -134,8 +133,8 @@ class Class implements Iterable, Serializable {
      * @throws AlreadyExistsException if already exists
      */
     public void addTeacher(Teacher t) throws AlreadyExistsException {
-        if (getTeacherSet().contains(t)) throw new AlreadyExistsException();
-        else getTeacherSet().add(t);
+        if (getTeachers().contains(t)) throw new AlreadyExistsException();
+        else getTeachers().add(t);
     }
 
     /**
@@ -144,7 +143,7 @@ class Class implements Iterable, Serializable {
      * @throws DoesntExistsException if doesn't exists
      */
     public void removeTeacher(Teacher t) throws DoesntExistsException {
-        if (getTeacherSet().contains(t)) getTeacherSet().remove(t);
+        if (getTeachers().contains(t)) getTeachers().remove(t);
         else throw new DoesntExistsException();
     }
 
@@ -155,9 +154,9 @@ class Class implements Iterable, Serializable {
      * @throws AlreadyExistsException if already exists.
      */
     public void addStudent(Student s) throws AlreadyExistsException {
-        if (getStudentSet().contains(s)) throw new AlreadyExistsException();
+        if (getStudents().contains(s)) throw new AlreadyExistsException();
         else {
-            getStudentSet().add(s);
+            getStudents().add(s);
             s.joinClass(this);
         }
     }
@@ -169,8 +168,8 @@ class Class implements Iterable, Serializable {
      * @throws DoesntExistsException if doesn't exists
      */
     public void removeStudent(Student s) throws DoesntExistsException {
-        if (getStudentSet().contains(s)) {
-            getStudentSet().remove(s);
+        if (getStudents().contains(s)) {
+            getStudents().remove(s);
             s.dropClass(this);
         }
         else throw new DoesntExistsException();
@@ -180,19 +179,19 @@ class Class implements Iterable, Serializable {
         return Code;
     }
 
-    private Set<Teacher> getTeacherSet() {
-        return teacherSet;
+    private Collection<Teacher> getTeachers() {
+        return teachers;
     }
 
-    private void setTeacherSet(Set<Teacher> teacherSet) {
-        this.teacherSet = teacherSet;
+    private void setTeachers(Collection<Teacher> teachers) {
+        this.teachers = teachers;
     }
 
-    private Set<Student> getStudentSet() {
-        return studentSet;
+    private Collection<Student> getStudents() {
+        return students;
     }
 
-    private void setStudentSet(Set<Student> studentSet) {
-        this.studentSet = studentSet;
+    private void setStudents(Collection<Student> students) {
+        this.students = students;
     }
 }

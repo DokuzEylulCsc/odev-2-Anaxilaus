@@ -1,76 +1,92 @@
 package Problemset;
 
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.HashSet;
 
-class Faculty implements Collection, Serializable {
-    private final String Name;
 
-    public String getName() {
-        return Name;
+class Faculty implements Iterable, Serializable {
+
+    private final String            Name;
+    private Collection<Department>  departments;
+
+
+    public Faculty(String name) {
+        this(name, new HashSet<>());
     }
 
-    Set<Department> departmentSet;
+    public Faculty(String name, Collection<Department> departments) {
+        Name = name;
+        setDepartments(departments);
+    }
+
+    @Override
+    public int hashCode() {
+        return getName().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 
     /**
      * @return Department iterator.
+     * @see Iterator
+     * @see Department
      */
-    public Iterator createIterator() {
-        return getDepartmentSet().iterator();
-    }
-
-    public void addDepartment(Department department) throws AlreadyExistsException {
-        if (getDepartmentSet().contains(department)) {
-            throw new AlreadyExistsException();
-        } else {
-            getDepartmentSet().add(department);
-        }
-    }
-
-    private Set<Department> getDepartmentSet() {
-        return departmentSet;
-    }
-
-    private void setDepartmentSet(Set<Department> departmentSet) {
-        this.departmentSet = departmentSet;
+    public Iterator iterator() {
+        return getDepartments().iterator();
     }
 
     /**
-     * Search Faculty in University by name
+     * Search Faculty in University by name.
      *
-     * @param searchName String
-     * @return if found Faculty, else null
-     * @see Faculty
+     * @param department Department
+     * @return if found Department, else null
+     * @see Department
      */
     public Department searchDepartment(Department department) {
-        for (Department d : getDepartmentSet()) {
+        for (Department d : getDepartments()) {
             if(d.equals(department)) return d;
         }
         return null;
     }
 
-    public Faculty(String name) {
-        Name = name;
-        setDepartmentSet(new HashSet<>());
+    /**
+     * Add a Department to this Faculty.
+     *
+     * @param department Initialized Department object
+     * @throws AlreadyExistsException if department already exists
+     */
+    public void addDepartment(Department department) throws AlreadyExistsException {
+        if (getDepartments().contains(department)) {
+            throw new AlreadyExistsException();
+        } else {
+            getDepartments().add(department);
+        }
     }
 
-    public Faculty(String name, Set<Department> departmentSet) {
-        Name = name;
-        setDepartmentSet(departmentSet);
+    /**
+     * Compare 2 Faculty objects.
+     *
+     * @param other Faculty object
+     * @return boolean
+     */
+    public boolean equals(Faculty other) {
+        return this.hashCode() == other.hashCode();
     }
 
-    public Boolean equals(Faculty d) {
-        return getName().equals(d.Name);
+    public String getName() {
+        return Name;
     }
 
-    @Override
-    public String toString(){
-        return getName();
+    private Collection<Department> getDepartments() {
+        return departments;
     }
 
-    @Override
-    public int hashCode() { return getName().hashCode(); }
-
+    private void setDepartments(Collection<Department> departments) {
+        this.departments = departments;
+    }
 }

@@ -1,18 +1,16 @@
 package Problemset;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 /**
- * Represents any Human being in an Educational Institute.
+ * Represents any Human being in an educational institute.
  */
 public abstract class Human implements Iterable, Serializable {
 
-    private final Integer   Id;
-    private final String    Name;
-    private Set<Class>      classSet;
+    private final Integer       Id;
+    private final String        Name;
+    private Collection<Class>   classes;
 
 
     public Human(Integer id) {
@@ -22,42 +20,12 @@ public abstract class Human implements Iterable, Serializable {
     public Human(Integer id, String name) {
         Id = id;
         Name = name;
-        setClassSet(new HashSet<>());
+        setClasses(new ArrayList<>());
     }
 
-    /**
-     * @return Iterator for associated classes.
-     */
     @Override
-    public Iterator iterator() {
-        return getClassSet().iterator();
-    }
-
-    public Integer getId() {
-        return Id;
-    }
-
-    public String getName() {
-        if (Name == null) return "null";
-        else return Name;
-    }
-
-    public Set<Class> getClassSet() {
-        return classSet;
-    }
-
-    private void setClassSet(Set<Class> classSet) {
-        this.classSet = classSet;
-    }
-
-    public void addClass(Class newClass) throws AlreadyExistsException {
-        if (getClassSet().contains(newClass)) throw new AlreadyExistsException(newClass.getCode());
-        else getClassSet().add(newClass);
-    }
-
-    public void dropClass(Class oldClass) throws DoesntExistsException {
-        if (getClassSet().contains(oldClass)) getClassSet().remove(oldClass);
-        else throw new DoesntExistsException(oldClass.getCode());
+    public int hashCode() {
+        return getId().hashCode();
     }
 
     @Override
@@ -67,8 +35,51 @@ public abstract class Human implements Iterable, Serializable {
                 + " | Name: " + getName();
     }
 
-    @Override
-    public int hashCode() {
-        return getId().hashCode();
+    /**
+     * @return Class object iterator.
+     * @see Iterator
+     * @see Class
+     */
+    public Iterator iterator() {
+        return getClasses().iterator();
+    }
+
+    public Integer getId() {
+        return Id;
+    }
+
+    public String getName() {
+        if (Name != null) return Name;
+        else return "null";
+    }
+
+    /*
+     * joinClass and dropClass methods are protected because
+     * students can drop a class themselves but they can't
+     * add or remove their names formally themselves. Therefore,
+     * these methods are exists only within package.
+     */
+
+    /* Used by Class.add* */
+    protected void joinClass(Class newClass) throws AlreadyExistsException {
+
+        if (getClasses().contains(newClass))
+            throw new AlreadyExistsException(newClass.getCode());
+        else getClasses().add(newClass);
+    }
+
+    /* Used by Class.remove* */
+    protected void dropClass(Class oldClass) throws DoesntExistsException {
+
+        if (getClasses().contains(oldClass)) getClasses().remove(oldClass);
+        else throw new DoesntExistsException(oldClass.getCode());
+    }
+
+    private Collection<Class> getClasses() {
+        return classes;
+    }
+
+    private void setClasses(Collection<Class> classes) {
+        this.classes = classes;
     }
 }

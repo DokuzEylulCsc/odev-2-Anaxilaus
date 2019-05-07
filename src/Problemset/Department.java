@@ -1,80 +1,133 @@
 package Problemset;
 
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.HashSet;
 
-class Department implements Collection, Serializable {
 
-    private final String Name;
-    Set<Class> classSet;
-    Set<Teacher> teacherSet;
+class Department implements Iterable, Serializable {
 
-    /**
-     * @return Class iterator.
-     */
-    public Iterator createIterator() {
-        return getClassSet().iterator();
-    }
+    private final String        Name;
+    private Collection<Class>   classes;
+    private Collection<Teacher> teachers;
 
-    public Set<Class> getClassSet() {
-        return classSet;
-    }
-
-    private void setClassSet(Set<Class> classSet) {
-        this.classSet = classSet;
-    }
-    public void addClass(Class newClass) throws AlreadyExistsException {
-        if (getClassSet().contains(newClass)) throw new AlreadyExistsException();
-        else getClassSet().add(newClass);
-    }
-
-    public void closeClass(Class oldClass) throws UnsupportedOperationException {
-        if (getClassSet().contains(oldClass)) {
-            for (Student s : oldClass.getStudentSet()) s.dropClass(oldClass);
-            for (Teacher t : oldClass.getTeacherSet()) t.dropClass(oldClass);
-            getClassSet().remove(oldClass);
-            System.out.println("Closed class: " + oldClass.toString());
-        } else throw new UnsupportedOperationException("You tried to close a class the doesn't exist in this Faculty: " + this.toString());
-    }
-
-    public Set<Teacher> getTeacherSet() {
-        return teacherSet;
-    }
-
-    public void setTeacherSet(Set<Teacher> teacherSet) {
-        this.teacherSet = teacherSet;
-    }
-
-    public void addTeacher(Teacher newTeacher) {
-        getTeacherSet().add(newTeacher);
-    }
-
-    public String getName() {
-        return Name;
-    }
 
     public Department(String name) {
-        Name = name;
-        setTeacherSet(new HashSet<>());
-        setClassSet(new HashSet<>());
-    }
-    public Department(String name, Set<Class> _classSet) {
-        Name = name;
-        setTeacherSet(new HashSet<>());
-        setClassSet(_classSet);
+        this(name, new HashSet<>());
     }
 
-    public Boolean equals(Department d) {
-        return getName().equals(d.getName());
+    /*
+     * Because of University.update, Teachers will be imported from classes.
+     * No need to pass Iterable<Teacher> to initialize.
+     */
+    public Department(String name, Collection<Class> collection) {
+        Name = name;
+        setTeachers(new HashSet<>());
+        setClasses(collection);
     }
+
+
+    @Override
+    public int hashCode() { return getName().hashCode(); }
 
     @Override
     public String toString() {
         return getName();
     }
 
-    @Override
-    public int hashCode() { return getName().hashCode(); }
+    /**
+     * @return Class iterator.
+     * @see Iterator
+     * @see Class
+     */
+    public Iterator iterator() {
+        return getClasses().iterator();
+    }
+
+    /**
+     * Open a pre-initialized Class in this Department.
+     *
+     * @param newClass Already initialized Class object.
+     * @throws AlreadyExistsException if newClass already exists
+     */
+    public void openClass(Class newClass) throws AlreadyExistsException {
+        if (getClasses().contains(newClass)) throw new AlreadyExistsException();
+        else getClasses().add(newClass);
+    }
+
+    /**
+     * Close a class. Update remove all Humans' relations to
+     * this Class and delete this object.
+     *
+     * @param oldClass Class object to terminate
+     * @throws DoesntExistsException if oldClass doesn't exists
+     */
+    public void closeClass(Class oldClass) throws DoesntExistsException {
+        if (getClasses().contains(oldClass)) {
+            for (Object h : oldClass) {
+                if (h instanceof Teacher) ((Teacher) h).dropClass(oldClass);
+                else  ((Student) h).dropClass(oldClass);
+            }
+            getClasses().remove(oldClass);
+            System.out.println("Closed class: " + oldClass.toString());
+        } else throw new DoesntExistsException();
+    }
+
+    /**
+     * Try to register a new Teacher into this Department.
+     *
+     * @param newTeacher Teacher object to register.
+     * @throws AlreadyExistsException if object already registered.
+     */
+    public void addTeacher(Teacher newTeacher) throws AlreadyExistsException {
+        if (getTeachers().contains(newTeacher)) {
+            throw new AlreadyExistsException();
+        } else getTeachers().add(newTeacher);
+    }
+
+    /**
+     * Try to remove a Teacher from this Department.
+     *
+     * @param teacher Teacher object to remove
+     * @throws DoesntExistsException if object doesn't exists
+     */
+    public void removeTeacher(Teacher teacher) throws DoesntExistsException {
+        if (getTeachers().contains(teacher)) {
+            getTeachers().remove(teacher);
+        } else throw new DoesntExistsException();
+    }
+
+    /**
+     * @return Name of this Department.
+     */
+    public String getName() {
+        return Name;
+    }
+
+    /**
+     * Compare 2 Departments by their hashCode.
+     * @param other Department to compare
+     * @return boolean
+     * @see boolean
+     */
+    public Boolean equals(Department other) {
+        return this.hashCode() == other.hashCode();
+    }
+
+    private Collection<Teacher> getTeachers() {
+        return teachers;
+    }
+
+    private void setTeachers(Collection<Teacher> teachers) {
+        this.teachers = teachers;
+    }
+
+    private Collection<Class> getClasses() {
+        return classes;
+    }
+
+    private void setClasses(Collection<Class> classes) {
+        this.classes = classes;
+    }
 }

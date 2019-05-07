@@ -8,4 +8,5 @@ class Teacher extends Human {
     public Teacher(Integer id, String name) {
         super(id, name);
     }
+
 }

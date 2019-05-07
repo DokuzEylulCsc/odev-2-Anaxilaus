@@ -1,6 +1,8 @@
 package Problemset;
 
+
 class Student extends Human {
+
     public Student(Integer id) {
         super(id);
     }

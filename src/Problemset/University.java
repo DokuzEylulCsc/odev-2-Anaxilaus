@@ -1,78 +1,103 @@
 package Problemset;
 
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.HashSet;
 
 
-class University implements Collection, Serializable {
+/**
+ * Root object of the object structure.
+ */
+class University implements Iterable, Serializable {
 
-    private final String Name;
-    private Set<Human> humanSet;
-    private Set<Faculty> facultySet;
+    private final String            Name;
+    private Collection<Human>       humans;
+    private Collection<Faculty>     faculties;
+
+
+    public University(String name) {
+        this(name, new HashSet<>());
+    }
+
+    public University(String name, Collection<Faculty> faculties) {
+        Name = name;
+        setFaculties(faculties);
+        setHumans(new HashSet<>());
+
+        update(false);
+    }
+
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 
     /**
-     * Return iterator for faculties.
+     * @return Faculty iterator.
+     * @see this.createFacultyIterator
      */
-    public Iterator createIterator() {
+    public Iterator iterator() {
         return createFacultyIterator();
     }
 
+    /**
+     * @return Faculty iterator.
+     * @see Iterator
+     * @see Faculty
+     */
     public Iterator createFacultyIterator() {
-        return getFacultySet().iterator();
-    }
-
-    public Iterator createHumanIterator() {
-        return getHumanSet().iterator();
-    }
-
-    public Set<Human> getHumanSet() {
-        return humanSet;
-    }
-
-    public void addHuman(Human h) throws AlreadyExistsException {
-        if (getHumanSet().contains(h)) throw new AlreadyExistsException(h.getId() + " exists in " + getName());
-        else getHumanSet().add(h);
-    }
-
-
-    private void setHumanSet(Set<Human> humanSet) {
-        this.humanSet = humanSet;
+        return getFaculties().iterator();
     }
 
     /**
-     * Add all Humans in all Classes to this University.
-     * @param print verbose indicator
+     * @return Human iterator.
+     * @see Iterator
+     * @see Human
      */
-    public void update(boolean print) {
-        if (print) System.out.println("Starting verbose update of " + this);
+    public Iterator createHumanIterator() {
+        return getHumans().iterator();
+    }
 
-        Iterator faculties = createIterator();
-        while (faculties.hasNext()) {
-            Faculty f = (Faculty) faculties.next();
-            if (print) System.out.println(f.getName());
+    /**
+     * Add all people in every Class who isn't included in this University.
+     * Update University bottom up using iterators.
+     */
+    public void update() {
+        update(true);
+    }
 
-            Iterator departments = f.createIterator();
-            while (departments.hasNext()) {
-                Department d = (Department) departments.next();
-                if (print) System.out.println("\t" + d);
+    /**
+     * Add all people in every Class who isn't included in this University.
+     * Update University bottom up using iterators.
+     *
+     * @param verbose boolean
+     */
+    public void update(boolean verbose) {
+        if (verbose) System.out.println("Starting verbose update of " + this);
 
-                Iterator classes = d.createIterator();
-                while (classes.hasNext()) {
-                    Class c = (Class) classes.next();
-                    if (print) System.out.println("\t\t" + c);
+        for (Object objF : this) {
+            Faculty f = (Faculty) objF;
+            if (verbose) System.out.println(f.getName());
 
-                    Iterator humans = c.createIterator();
-                    while (humans.hasNext()) {
-                        Human h = (Human)humans.next();
-                        if (print) System.out.println("\t\t\t" + h);
+            for (Object objD : (Faculty) objF) {
+                Department d = (Department) objD;
+                if (verbose) System.out.println("\t" + d);
+
+                for (Object objC : d) {
+                    Class c = (Class) objC;
+                    if (verbose) System.out.println("\t\t" + c);
+
+                    for (Object objH : c) {
+                        Human h = (Human) objH;
+                        if (verbose) System.out.println("\t\t\t" + h);
 
                         try {
-                            addHuman(h);
+                            this.addHuman(h);
                             if (h instanceof Teacher) d.addTeacher((Teacher) h);
                         } catch (AlreadyExistsException e) {
-                            continue;
+                            ;
                         }
                     }
                 }
@@ -80,100 +105,125 @@ class University implements Collection, Serializable {
         }
     }
 
-    public void update() {
-        update(true);
-    }
-
-    public void removeHuman(Human human) {
-        if (getHumanSet().contains(human)) {
-            getHumanSet().remove(human);
-        }
-    }
-
-    public String getName() { return Name; }
-
-    public Set<Faculty> getFacultySet() {
-        return facultySet;
-    }
-
-    public void setFacultySet(Set<Faculty> facultySet) {
-        this.facultySet = facultySet;
-    }
-
-    public void addFaculty(Faculty faculty) {
-        if (getFacultySet().contains(faculty)) throw new AlreadyExistsException(faculty.getName());
-        else getFacultySet().add(faculty);
-    }
-
     /**
-     * Search Student in University by name
+     * Search Student in University by Name.
      *
      * @param searchName String
      * @return if found Student, else null
      * @see Student
+     * @see null
      */
     public Student searchStudent(String searchName) {
         Iterator iterator = createHumanIterator();
         while(iterator.hasNext()) {
             Human h = (Human) iterator.next();
+
             if (h instanceof Student && h.getName().equals(searchName)) {
                 return (Student) h;
             }
         }
-
         return null;
     }
 
     /**
-     * Search Student in University by name
+     * Search Student in University by id number.
      *
      * @param id decimal
      * @return if found Student, else null
      * @see Student
+     * @see null
      */
     public Student searchStudent(Integer id) {
         Iterator iterator = createHumanIterator();
         while(iterator.hasNext()) {
             Human h = (Human) iterator.next();
-            if (h instanceof Student && h.getId().equals(id)) {
-                return (Student) h;
-            }
-        }
 
+            if (h instanceof Student && h.getId().equals(id))
+                return (Student) h;
+        }
         return null;
     }
 
     /**
-     * Search Faculty in University by name
+     * Search Faculty in University by Name.
      *
      * @param searchName String
      * @return if found Faculty, else null
      * @see Faculty
+     * @see null
      */
     public Faculty searchFaculty(String searchName) {
         Iterator iterator = createFacultyIterator();
         while (iterator.hasNext()) {
             Faculty f = (Faculty) iterator.next();
-            if (f.getName().equals(searchName)) return f;
-        }
 
+            if (f.getName().equals(searchName))
+                return f;
+        }
         return null;
     }
 
-    public University(String name) {
-        Name = name;
-        setFacultySet(new HashSet<>());
-        setHumanSet(new HashSet<>());
+    /**
+     * Register a Human to this University.
+     *
+     * @param human Human object
+     * @throws AlreadyExistsException if human already exists
+     */
+    public void addHuman(Human human) throws AlreadyExistsException {
+        if (getHumans().contains(human))
+            throw new AlreadyExistsException(human.getId() + " exists in " + getName());
+        else getHumans().add(human);
     }
 
-    public University(String name, Set<Faculty> faculties) {
-        Name = name;
-        setFacultySet(faculties);
-        setHumanSet(new HashSet<>());
+    /**
+     * Remove a Human from this University.
+     *
+     * @param human Human object
+     * @throws DoesntExistsException if human doesn't exists
+     */
+    public void removeHuman(Human human) throws DoesntExistsException {
+        if (getHumans().contains(human)) getHumans().remove(human);
+        else throw new DoesntExistsException();
     }
 
-    @Override
-    public String toString() {
-        return getName();
+    /**
+     * Add a Faculty to this University.
+     *
+     * @param faculty Faculty object
+     * @throws AlreadyExistsException if already exists
+     */
+    public void addFaculty(Faculty faculty) throws AlreadyExistsException {
+        if (getFaculties().contains(faculty))
+            throw new AlreadyExistsException(faculty.getName());
+        else getFaculties().add(faculty);
+    }
+
+    /**
+     * Open a Faculty in this University.
+     * Initializes a Faculty and invokes addFaculty.
+     *
+     * @param Name Name of the Faculty
+     * @param departmentIterable Iterable object contains departments to add, or null
+     */
+    public void openFaculty(String Name, Collection<Department> departmentIterable) {
+        addFaculty(new Faculty(Name, departmentIterable));
+    }
+
+    public String getName() { return Name; }
+
+    private Collection<Faculty> getFaculties() {
+        return faculties;
+    }
+
+    private void setFaculties(Collection<Faculty> faculties) {
+        this.faculties = faculties;
+    }
+
+    private Collection<Human> getHumans() {
+        return humans;
+    }
+
+    private void setHumans(Collection<Human> humans) {
+        this.humans = humans;
     }
 }
