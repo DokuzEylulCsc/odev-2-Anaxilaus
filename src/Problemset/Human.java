@@ -5,18 +5,31 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+/**
+ * Represents any Human being in an Educational Institute.
+ */
+public abstract class Human implements Iterable, Serializable {
 
-public abstract class Human implements Collection, Serializable {
+    private final Integer   Id;
+    private final String    Name;
+    private Set<Class>      classSet;
 
-    private final Integer Id;
-    private final String Name;
-    private Set<Class> classSet;
+
+    public Human(Integer id) {
+        this(id, null);
+    }
+
+    public Human(Integer id, String name) {
+        Id = id;
+        Name = name;
+        setClassSet(new HashSet<>());
+    }
 
     /**
      * @return Iterator for associated classes.
      */
     @Override
-    public Iterator createIterator() {
+    public Iterator iterator() {
         return getClassSet().iterator();
     }
 
@@ -47,21 +60,11 @@ public abstract class Human implements Collection, Serializable {
         else throw new DoesntExistsException(oldClass.getCode());
     }
 
-    public Human(Integer id) {
-        Id = id;
-        Name = null;
-        setClassSet(new HashSet<>());
-    }
-
-    public Human(Integer id, String name) {
-        Id = id;
-        Name = name;
-        setClassSet(new HashSet<>());
-    }
-
     @Override
     public String toString() {
-        return this.getClass().getName().substring("Problemset.".length()) + " | Id: " + getId() + " | Name: " + getName();
+        return this.getClass().getName().substring("Problemset.".length())
+                + " | Id: " + getId()
+                + " | Name: " + getName();
     }
 
     @Override
