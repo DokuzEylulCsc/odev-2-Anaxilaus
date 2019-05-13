@@ -23,10 +23,10 @@ $ java Problemset.Main
 
 ## Project structure
 ```
-│   ├── src [Source Code]
-│   │   ├── ProblemSet
-│   ├── bin [Bytecodes]
-│   │   ├── ProblemSet
+├── src [Source Code]
+│   ├── ProblemSet
+├── bin [Bytecodes]
+│   ├── ProblemSet
 ├── BIL2002.xml [Sample XML output]
 ├── BILG1001.xml [Sample XML output]
 ├── University.ser [Optional serialization]
